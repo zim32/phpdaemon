@@ -114,9 +114,15 @@ class Zim32WebSocketSession extends WebSocketSession{
 				if($FRAME == false){
 					return;
 				}
+				switch($FRAME['type']){
+					case self::FRAME_TYPE_PING:
+						$this->sendFrame($FRAME['data'],self::FRAME_TYPE_PONG);
+						$this->buf = binarySubstr($this->buf,$FRAME['total_frame_length']);
+						continue;
+					break;
+				}
 				$this->onFrame($FRAME['data'], $FRAME['type']);
 				$this->buf = binarySubstr($this->buf,$FRAME['total_frame_length']);
-				return;
 			}
 		}
 	}
@@ -199,7 +205,7 @@ class Zim32WebSocketSession extends WebSocketSession{
 			$this->finish();
 			return;
 		}
-		
+
 		if($buff_length < ($TOTAL_FRAME_LENGTH)) return false;
 		
 		$DATA = '';
