@@ -176,7 +176,7 @@ class Zim32WebSocketSession extends WebSocketSession{
 		$FRAME_TYPE = $OPCODE;
 		$MASKED = $stream->get(2)->getBit(1);
 		if(!$MASKED) {
-			$this->write("HTTP/1.1 1002");
+			$this->write("HTTP/1.1 1002\r\n\r\n");
 			$this->finish();
 			return;
 		}
