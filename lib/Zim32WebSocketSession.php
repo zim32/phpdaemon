@@ -2,6 +2,7 @@
 
 require_once(dirname(__FILE__).'/php_bit/phpbit.php');
 use \PhpBit\Byte;
+use \PhpBit\Word;
 use \PhpBit\Dword;
 use \PhpBit\Stream;
 
@@ -185,12 +186,13 @@ class Zim32WebSocketSession extends WebSocketSession{
 			// move to mask
 			$stream->next();
 			$DATA_LENGTH = $PLEN;
-			$MASK = array($stream->next(),$stream->next(),$stream->next(),$stream->next());;
+			$MASK = array($stream->next(),$stream->next(),$stream->next(),$stream->next());
 			$TOTAL_FRAME_LENGTH+=(4+$DATA_LENGTH);
 		}elseif($PLEN == 126){
 			$stream->next();
 			$length = new Word($stream->next(),$stream->next());
 			$DATA_LENGTH = $length->toN();
+			$MASK = array($stream->next(),$stream->next(),$stream->next(),$stream->next());
 			$TOTAL_FRAME_LENGTH+=(6+$DATA_LENGTH);
 		}elseif($PLEN == 127){
 			Daemon::log("Not supported frame format");
