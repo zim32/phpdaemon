@@ -141,7 +141,7 @@ class WebSocketServer extends AsyncServer {
 	 * @return void
 	 */
 	protected function onAccepted($connId, $addr) {
-		$this->sessions[$connId] = new WebSocketSession($connId, $this);
+		$this->sessions[$connId] = new Zim32WebSocketSession($connId, $this);
 		$this->sessions[$connId]->clientAddr = $addr;
 	}
 	
